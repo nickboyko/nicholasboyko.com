@@ -36,7 +36,7 @@ socials = [
 
 menu = [
   # Configure menu bar here
-  { name = "about", url = "/about", weight = 1 },
-  { name = "contact", url = "/contact", weight = 2 },
+  { name = "contact", url = "/contact", weight = 1 },
+  { name = "resume", url = "/Nick_Boyko_Resume.pdf", weight = 2 },
   { name = "posts", url = "/posts", weight = 3 },
 ]   
