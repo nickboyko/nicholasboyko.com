@@ -15,3 +15,4 @@ jobs:
         env:
           PAGES_BRANCH: dreamhost-deploy
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          BUILD_FLAGS: --base-url https://nicholasboyko.com
