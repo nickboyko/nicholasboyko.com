@@ -31,14 +31,14 @@
                         {% if post.summary %}
                             <p>{{ post.summary }}</p>
                         {% else %}
-                            <p>{{ post.content | striptags | truncate(length=150) }}</p>
+                            <p>{{ post.content | striptags | truncate(length=200) }}</p>
                         {% endif %}
-                        <a href="{{ post.permalink }}">Read more →</a>
+                        <a href="{{ post.permalink }}">read more... →</a>
                     </article>
                 {% endfor %}
             </div>
             <div class="view-all">
-                <a href="/posts">View all posts →</a>
+                <a href="/posts">view all posts →</a>
             </div>
         {% endif %}
     </section>
