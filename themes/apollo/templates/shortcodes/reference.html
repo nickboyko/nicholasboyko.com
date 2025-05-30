@@ -1,0 +1,18 @@
+{# Load from static directory #}
+
+{% if page.extra and page.extra.bib_file %}
+  {% set bib_file = "static/" ~ page.extra.bib_file %}
+  {% set citations = load_data(path=bib_file, format="bibtex", required=false) %}
+{% else %}
+  {# Fallback to default bibliography or no citations #}
+  {% set citations = false %}
+{% endif %}
+
+{% if citations %}
+    {% for bib in citations.bibliographies %}
+        {% if bib.citation_key == key %}
+            {% set_global num = loop.index %}
+        {% endif %}
+    {% endfor %}
+    <a href="#bibref-{{ key }}" class="ref-link">[{{ num | default(value="#noref") }}]</a>
+{% endif %}

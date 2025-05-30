@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block main_content %}
+    {{ post_macros::content(page=page) }}
+    {% if page.extra and page.extra.bib_file %}
+        {% set bib_file = "static/" ~ page.extra.bib_file %}
+        {% set citations = load_data(path=bib_file, format="bibtex", required=false) %}
+    {% else %}
+        {# Fallback to default bibliography or no citations #}
+        {% set citations = false %}
+    {% endif %}
+
+    {% if citations %}
+    <div id="references">
+    {% set has_references = citations.bibliographies | length > 0 %}
+    {% if has_references %}
+        <h3>references</h3>
+        <dl>
+        {% for citation in citations.bibliographies %}
+            {{ post_macros::ref(bibliography=citation,num=loop.index) }}
+        {% endfor %}
+        </dl>
+    {% endif %}
+    </div>
+{% endif %}
+{% endblock main_content %}

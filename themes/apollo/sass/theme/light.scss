@@ -1,0 +1,38 @@
+$bg-0: #e0d1ab;
+$bg-1: darken($bg-0, 2%);
+$bg-2: darken($bg-1, 8%);
+
+$text-0: darken($bg-0, 87%);
+$text-1: darken($bg-0, 60%);
+
+:root.light {
+  --text-0: #{$text-0};
+  --text-1: #{$text-1};
+
+  --bg-0: #{$bg-0};
+  --bg-1: #{$bg-1};
+  --bg-2: #{$bg-2};
+
+  --border-color: var(--bg-2);
+
+  --primary-color: #be250e;
+  --hover-color: #e0d1ab;
+
+  // invert colour on hover for consistency
+  .social :hover {
+    color: var(--bg-0);
+  }
+  .search-button,
+  .search-icon {
+    color: var(--text-0); // or your preferred palette variable
+  }
+
+  .search-button :hover {
+    color: var(--primary-color); // or your preferred palette variable
+  }
+
+  #dark-mode-toggle :hover {
+    color: var(--primary-color);
+    transition: all 0.1s ease-in-out;
+  }
+}
