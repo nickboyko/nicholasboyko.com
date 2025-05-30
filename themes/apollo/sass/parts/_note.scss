@@ -11,6 +11,7 @@
   position: relative;
   border-left: 3px solid var(--primary-color);
   font-family: var(--paragraph-font);
+  transition: border-color 0.2s ease-in-out;
 }
 
 .note-toggle,
@@ -24,7 +25,7 @@
   position: relative;
   outline: none;
   font-size: 1.2em;
-  transition: background-color 0.3s ease;
+  transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
 
   p {
     margin: 0;
@@ -69,6 +70,7 @@
 .note-content {
   padding: 10px 20px;
   background-color: var(--note-content-bg);
+  transition: background-color 0.2s ease-in-out;
 }
 
 .note-icon::before {
@@ -82,7 +84,6 @@
 
 summary {
     padding-left: 0.5em;
-
     &:hover {
         background-color: var(--primary-color);
         color: var(--hover-color);
