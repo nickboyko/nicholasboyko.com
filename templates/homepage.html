@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block main_content %}
+
+    {% if section.extra.section_path -%}
+        {% set section = get_section(path=section.extra.section_path) %}
+    {% endif -%}
+
+    {% block title %}
+        {{ post_macros::page_header(title=section.title) }}
+    {% endblock title %}
+    <!-- Homepage content from _index.md -->
+    <div class="homepage-content">
+        {{ section.content | safe }}
+    </div>
+
+    <!-- Posts section - ONLY appears on homepage -->
+    <section class="posts-section">
+        {% block posttitle %}
+            {{ post_macros::posts_header(title="recent posts") }}
+        {% endblock posttitle %}
+        {% set posts_section = get_section(path="posts/_index.md") %}
+        {% if posts_section and posts_section.pages %}
+            <div class="posts-list">
+                {% for post in posts_section.pages | slice(end=5) %}
+                    <article class="post-item">
+                        <h1><a href="{{ post.permalink }}">{{ post.title }}</a></h1>
+                        {% if post.date %}
+                            <time datetime="{{ post.date }}">{{ post.date | date(format="%B %d, %Y") }}</time>
+                        {% endif %}
+                        {% if post.summary %}
+                            <p>{{ post.summary }}</p>
+                        {% else %}
+                            <p>{{ post.content | striptags | truncate(length=150) }}</p>
+                        {% endif %}
+                        <a href="{{ post.permalink }}">Read more →</a>
+                    </article>
+                {% endfor %}
+            </div>
+            <div class="view-all">
+                <a href="/posts">View all posts →</a>
+            </div>
+        {% endif %}
+    </section>
+{% endblock main_content %}
