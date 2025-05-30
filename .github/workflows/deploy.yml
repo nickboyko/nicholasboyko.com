@@ -1,0 +1,17 @@
+name: Build and Deploy to DreamHost
+on:
+  push:
+    branches: [main]
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      
+      - name: Build with Zola
+        uses: shalzz/zola-deploy-action@v0.20.0
+        env:
+          PAGES_BRANCH: dreamhost-deploy
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
