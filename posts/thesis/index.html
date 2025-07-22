@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="en" class="dark light">
+
+    <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="base" content="https:&#x2F;&#x2F;nicholasboyko.com">
+
+    
+
+    
+    
+    
+        <title>
+            
+                hyperbolic genre embeddings for music classification
+            
+        </title>
+
+        
+            <meta property="og:title"
+                  content="hyperbolic genre embeddings for music classification" />
+        
+    
+
+    
+        
+    
+
+    
+        
+    
+
+    
+    
+
+    
+    
+        <link href=https://nicholasboyko.com/fonts.css rel="stylesheet" />
+    
+
+    
+    
+
+    
+    <script src=https://nicholasboyko.com/js/codeblock.js></script>
+
+    
+    
+
+    
+    
+        <script src=https://nicholasboyko.com/js/note.js></script>
+    
+
+    
+        
+            <script>
+            MathJax = {
+              tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']]
+              }
+            };
+            </script>
+        
+        <script type="text/javascript" id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+        </script>
+    
+
+    
+    <link rel="alternate"
+          type="application/atom+xml"
+          title="nick boyko"
+          href="https://nicholasboyko.com/atom.xml">
+
+    <link rel="stylesheet" href="/syntax-dark.css" media="all">
+    <link rel="stylesheet" href="/syntax-light.css" media="not all">
+
+
+    
+    
+        <link rel="stylesheet"
+              type="text/css"
+              href="https://nicholasboyko.com/theme/light.css" />
+        <link id="darkModeStyle"
+              rel="stylesheet"
+              type="text/css"
+              href="https://nicholasboyko.com/theme/dark.css" />
+    
+
+    <!-- Set the correct theme in the script -->
+
+    
+        <script src=https://nicholasboyko.com/js/themetoggle.js></script>
+
+        
+            <script>setTheme(getSavedTheme());</script>
+        
+    
+
+
+    <link rel="stylesheet"
+          type="text/css"
+          media="screen"
+          href="https://nicholasboyko.com/main.css" />
+
+    
+
+    <script defer
+                    src="https://nicholasboyko.com/search_index.en.js?h=007457ad2fa687ac4e42"></script>
+        <script defer
+                src="https://nicholasboyko.com/js/searchElasticlunr.min.js?h=3626c0ef99daa745b31e"></script></head>
+
+
+    <body>
+        <div class="content">
+            <header>
+    <div class="main">
+        
+            <a href=https:&#x2F;&#x2F;nicholasboyko.com>nick boyko</a>
+        
+
+
+        <div class="socials">
+            
+                <a rel="me" href="https:&#x2F;&#x2F;www.linkedin.com&#x2F;in&#x2F;nicholasboyko&#x2F;" class="social">
+                    <!-- <img alt="linkedin"
+                         src="https://nicholasboyko.com/icons/social/linkedin.svg"> -->
+                    <span class="icon" aria-label="linkedin">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Pro 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path fill="currentColor" d="M416 32H31.9C14.3 32 0 46.5 0 64.3v383.4C0 465.5 14.3 480 31.9 480H416c17.6 0 32-14.5 32-32.3V64.3c0-17.8-14.4-32.3-32-32.3zM135.4 416H69V202.2h66.5V416zm-33.2-243c-21.3 0-38.5-17.3-38.5-38.5S80.9 96 102.2 96c21.2 0 38.5 17.3 38.5 38.5 0 21.3-17.2 38.5-38.5 38.5zm282.1 243h-66.4V312c0-24.8-.5-56.7-34.5-56.7-34.6 0-39.9 27-39.9 54.9V416h-66.4V202.2h63.7v29.2h.9c8.9-16.8 30.6-34.5 62.9-34.5 67.2 0 79.7 44.3 79.7 101.9V416z"/></svg>
+
+                        <!-- DEBUG: linkedin -->
+                    </span>
+                </a>
+            
+                <a rel="me" href="https:&#x2F;&#x2F;github.com&#x2F;nickboyko&#x2F;" class="social">
+                    <!-- <img alt="github"
+                         src="https://nicholasboyko.com/icons/social/github.svg"> -->
+                    <span class="icon" aria-label="github">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Pro 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path fill="currentColor" d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+
+                        <!-- DEBUG: github -->
+                    </span>
+                </a>
+            
+        </div>
+    </div>
+
+    <nav>
+        
+            <a href=https://nicholasboyko.com/contact style="margin-left: 0.25em">contact</a>
+        
+            <a href=https://nicholasboyko.com/Nick_Boyko_Resume.pdf style="margin-left: 0.25em">resume</a>
+        
+            <a href=https://nicholasboyko.com/posts style="margin-left: 0.25em">posts</a>
+        
+
+        
+            <button id="search-button"
+                    class="search-button"
+                    title="$SHORTCUT to open search">
+                <!-- <img src="https://nicholasboyko.com/icons/search.svg"
+                     alt="Search"
+                     class="search-icon"> -->
+                <span class="icon search-icon" aria-label="Search">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-search"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+
+                </span>
+            </button>
+
+            <div id="searchModal"
+                 class="search-modal js"
+                 role="dialog"
+                 aria-labelledby="modalTitle">
+                <div id="modal-content">
+                    <h1 id="modalTitle" class="page-header">Search</h1>
+                    <div id="searchBar">
+                        <input id="searchInput"
+                               role="combobox"
+                               autocomplete="off"
+                               spellcheck="false"
+                               aria-expanded="false"
+                               aria-controls="results-container"
+                               placeholder="Search..." />
+                        <button id="clear-search" class="clear-button" title="Clear search">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
+                                <path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z" />
+                            </svg>
+                        </button>
+                    </div>
+                    <div id="results-container">
+                        <div id="results-info">
+                            <span id="zero_results" style="display: none;">No results</span>
+                            <span id="one_result" style="display: none;">1 result</span>
+                            <span id="many_results" style="display: none;">$NUMBER results</span>
+                        </div>
+                        <div id="results" role="listbox"></div>
+                    </div>
+                </div>
+            </div>
+        
+
+        
+            <a id="dark-mode-toggle"
+               onclick="toggleTheme(); event.preventDefault();"
+               href="#">
+                <!-- <img src="https://nicholasboyko.com/icons/sun.svg"
+                     id="sun-icon"
+                     style="filter: invert(1)"
+                     alt="Light" />
+                <img src=https://nicholasboyko.com/icons/moon.svg id="moon-icon" alt="Dark" /> -->
+                <span class="icon" id="sun-icon" aria-label="Light">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-sun"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+
+                </span>
+                <span class="icon" id="moon-icon" aria-label="Dark">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-moon"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+
+                </span>
+            </a>
+
+            <!-- Inititialize the theme toggle icons -->
+            <script>updateItemToggleTheme()</script>
+        
+    </nav>
+</header>
+
+
+            
+            
+    
+    <main>
+        <article>
+            <div class="title">
+                
+                
+    <div class="page-header">
+        hyperbolic genre embeddings for music classification<span class="primary-color" style="font-size: 1.6em">.</span>
+    </div>
+
+
+                <div class="meta">
+                    
+                        Posted on <time>2025-05-19</time>
+                    
+
+                    
+                        :: Updated on <time>2025-05-29</time>
+                    
+
+                    
+
+                    :: 2108 Words
+
+                    
+                    
+                        <span class="tags-label">:: Tags:</span>
+                        <span class="tags">
+                                <a href="https://nicholasboyko.com/tags/thesis/"
+                                   class="post-tag">thesis</a>
+                                
+                            
+                        </span>
+                    
+
+                    
+                    
+
+                    
+
+                </div>
+            </div>
+
+            
+
+            
+            
+
+            <section class="body">
+                <h1 id="hyperbolic-genre-embeddings-for-music-classification"><a class="zola-anchor" href="#hyperbolic-genre-embeddings-for-music-classification" aria-label="Anchor link for: hyperbolic-genre-embeddings-for-music-classification">hyperbolic genre embeddings for music classification</a></h1>
+<p>is the title of my master's thesis in music technology, which i completed under the advisement of Dr. Juan Pablo Bello and Dr. Brian McFee, at different times. i had a ton of fun working on this project, so i wanted to commemorate it at least somewhat with a more informal run-through of my goals and approach.</p>
+<div class="note-container">
+    
+            <div class="note-header">
+                
+                    <div class="note-icon"><p>tl;dr</p>
+</div>
+                
+            </div>
+            <div class="note-content"><p>i investigated whether hyperbolic embeddings of music genres obtained from co-occurrence data can be used for music classification tasks. the answer i arrived at was... it seems probable, with further research certainly remaining interesting!</p>
+</div>
+        
+    </div>
+<h2 id="motivation-background-etc"><a class="zola-anchor" href="#motivation-background-etc" aria-label="Anchor link for: motivation-background-etc">motivation, background, etc.</a></h2>
+<p>music genre classification and discussion is one of my personal obsessions. i spend a lot of time thinking about why we talk about music with the language that we do; why it matters to us as listeners in the first place; and how we decide how music is related to other music. these are, perhaps unsurprisingly, pretty challenging questions to answer. and spending a lot of time on <a href="https://rateyourmusic.com">rateyourmusic</a> is not actually as productive as one might hope. sigh.</p>
+<p>in any case, there's been a veritable wealth of investigation into several of these questions over the past few decades in music information retrieval (MIR) research. the bottom line, roughly, is that music genre classification is really hard, in the best case. there are a bunch of reasons for this, but perhaps the most important is that genres labels are both subjective and editorial 
+
+
+  
+  
+
+
+
+    
+        
+            
+        
+    
+        
+    
+        
+    
+        
+    
+    <a href="#bibref-lena2008classification" class="ref-link">[1]</a>
+
+.</p>
+<p>there's no expectation for humans to agree on the "true" genre label for a piece of music, and we often don't (...such is the plight of the aforementioned rateyourmusic). moreover, it's not just nice audio features (things like pitch, timbre, and tempo) by which we designate the "correct" genre label for a piece of music -- it's all sorts of extramusical characteristics as well. things like lyrics, cover art, geographical information.</p>
+<p>so the attention then necessarily sort of turns to how we best approximate the popular opinion of genre labeling -- not only the descriptors that are often used <em>in the real world</em>, but also the relationships between them. it would be better, after all, to misclassify a genre as something kinda similar, than dubiously related at all. that is, having a notion of <em>incorrectness</em> in genre classification is important.</p>
+<h3 id="hyperbolic-embeddings"><a class="zola-anchor" href="#hyperbolic-embeddings" aria-label="Anchor link for: hyperbolic-embeddings">hyperbolic embeddings</a></h3>
+<p>to attempt to work towards this goal, i wanted to investigate graph embeddings of a <em>co-occurrence</em> matrix of music genres—representing, in essence, when genre $i$ appears alongside genre $j$ in common usage. if "rock" as a label commonly shows up alongside "heavy metal," we want to capture that. in particular, i used co-occurrence data from the <a href="https://developer.spotify.com/documentation/web-api/reference/get-an-artist">Spotify API</a>, based on curated genre playlists from the husk of the <a href="https://everynoise.com">every noise at once</a> project, started by glenn mcdonald probably before i was sentient.</p>
+<p>this project contained an algorithmically-curated playlist full of 100 songs which are representative of the 6,291 genre tags in the Spotify dataset, based on popularity, listener patterns, and so on. from these tracks, i scraped the genre information from each associated artist (since Spotify assigns genre labels at the artist level). i then created a directed adjacency matrix for this data, by taking a connection from $i$ to $j$ to mean that on the playlist for genre $i$, genre $j$ also appears at least once. each connection was also weighted by the number of co-occurrences; so if "pop" appears 43 times in the "rock" playlist, the edge from "rock" to "pop" would have a weight of 43. relatively self-explanatory, i hope.</p>
+<div class="note-container">
+    
+            <div class="note-header">
+                
+                    <div class="note-icon"><p>co-occurrence matrices?</p>
+</div>
+                
+            </div>
+            <div class="note-content"><p>the co-occurrence matrix for music genres has entries $A_{\set{i,j}}$, which represent directed connections from genre $i$ to genre $j$. in most cases, we also disregard auto-adjacency, meaning that $A_{\set{i,i}} = 0$. note also that this matrix isn't necessarily symmetric; $i \to j$ does not imply $j \to i$.</p>
+</div>
+        
+    </div>
+<p>Astefanoaei &amp; Collignon 
+
+
+  
+  
+
+
+
+    
+        
+    
+        
+            
+        
+    
+        
+    
+        
+    
+    <a href="#bibref-astefanoaei2020hyperbolic" class="ref-link">[2]</a>
+
+, whose work i expanded on for this project, showed that the co-occurrence matrix is a capable representation of hierarchical relationships in genres. this is essentially because we take that genre $i \to j \neq j \to i$, which is the relationship that all genre $i$ is $j$, but not all $j$ is $i$. consider "rock" and "pop rock"; all "pop rock" is probably "rock," but the other way around is not necessarily true.</p>
+<p>great! so what do we do with this? well, we can stick it into a poincaré embedding model, such as the seminal work by Nickel &amp; Kiela 
+
+
+  
+  
+
+
+
+    
+        
+    
+        
+    
+        
+            
+        
+    
+        
+    
+    <a href="#bibref-nickel2017poincare" class="ref-link">[3]</a>
+
+, which takes exactly this graph representation and tries to embed it in hyperbolic space. this hyperbolic space has the property of consistent negative curvature; as we get further out from the center of the space, there's basically "more space" for points (embeddings) to exist. the bottom line here is that hyperbolic space is the analog equivalent of a tree structure; in other words, exactly what we're trying to represent. great!</p>
+<figure style="text-align: center;">
+  <img src="/images/thesis/poincare.png" alt="My photo" style="max-width:400px; width:100%; height:auto; display:block; margin-left:auto; margin-right:auto; margin-bottom:1em;">
+  <figcaption>fig 1: straight lines (geodesics) in the poincaré disk model (2-dimensional poincaré space). <a href="https://en.wikipedia.org/wiki/Poincaré_disk_model">source</a></figcaption>
+</figure>
+<h2 id="hybrid-cross-entropy-loss"><a class="zola-anchor" href="#hybrid-cross-entropy-loss" aria-label="Anchor link for: hybrid-cross-entropy-loss">hybrid cross-entropy loss</a></h2>
+<p>the main thing i wanted to test with this work was whether we could usefully leverage these embeddings as some sort of a weighting scheme within classification tasks—specifically, in a way that would allow us to generically apply a large, pre-computed embedding space onto arbitrary classification models. to test this, i roughly borrowed a training pipeline from the NLP world, specifically from the work of Chen et al. 
+
+
+  
+  
+
+
+
+    
+        
+    
+        
+    
+        
+    
+        
+            
+        
+    
+    <a href="#bibref-chen2023label" class="ref-link">[4]</a>
+
+ on emotion classification in text representations.</p>
+<figure style="text-align: center;">
+  <img src="/images/thesis/pipeline.png" alt="My photo" style="max-width:800px; width:100%; height:auto; display:block; margin-left:auto; margin-right:auto; margin-bottom:1em;">
+  <figcaption>fig 2: training pipeline with my custom hybrid loss function.</figcaption>
+</figure>
+<p>the goal of this pipeline was basically just to shove the structure of the hyperbolic space into a normal, boring training paradigm—and hopefully investigate at sort of the barest level whether the structure of the space might provide any interesting benefits to classification tasks. to do this, i took the approach from Chen et al.'s work of adding a weighting term $w_i$ to the classical cross-entropy loss function:</p>
+<p>\begin{equation}
+\mathcal{L}_{CE} = \frac{1}{N} \sum_{i=1}^{N} - \log \frac{\exp(c_{i}^{y_i})}{\sum_{j=1}^{k} \exp(c_i^j)}
+\end{equation}</p>
+<p>\begin{equation}
+\mathcal{L}_{WCE} = \frac{1}{N} \sum_{i=1}^{N} -\textcolor{red}{w_i} \log \frac{\exp(c_{i}^{y_i})}{\sum_{j=1}^{k} \exp(c_i^j)}
+\end{equation}</p>
+<p>this term just comes from the hyperbolic distance between genre embeddings in poincaré space:</p>
+<p>\begin{equation}
+w_i = d(y_i, \hat{y}_i) = \cosh^{-1}\left( 1 + 2\frac{\lVert y_i - \hat{y}_i \rVert ^2 }{(1 - \lVert y_i \rVert ^2)(1 - \lVert \hat{y}_i \rVert ^2)} \right)
+\end{equation}</p>
+<h2 id="the-embeddings-in-question"><a class="zola-anchor" href="#the-embeddings-in-question" aria-label="Anchor link for: the-embeddings-in-question">the embeddings in question</a></h2>
+<p>even outside of the question of genre classification, replicating the results from Astefanoaei and Collignon's paper was pretty cool. there are some interesting insights here already:</p>
+<div class="image-row">
+  <figure>
+    <img src="/images/thesis/heatmap_genres.png" alt="First image">
+    <figcaption>fig 3: poincaré genre label embeddings, with GTZAN labels in red</figcaption>
+  </figure>
+  <figure>
+    <img src="/images/thesis/hyperbolic_clustering_ward_amended.png" alt="Second image">
+    <figcaption>fig 4: agglomerative hierarchical clustering with Ward linkage</figcaption>
+  </figure>
+</div>
+<p>for one, we see some key semantic clusterings that we hoped would show up in these embeddings; for example, "rock" and "metal" end up next to each other, as do "jazz" and "disco", and the high-level genres that are highlighted in fig 3 are spread relatively evenly around the poincaré disk. cool! we also see that these high-level genres roughly adhere to the hierarchical clustering analysis in fig 4.</p>
+<p>these embeddings also outperform Word2Vec, a similar "sentence embedding" model that embeds the exact same data (co-occurrence of words in sentences, with directionality encoded by position in the sentence). A t-SNE plot of those embeddings looked like this:</p>
+<figure style="text-align: center;">
+  <img src="/images/thesis/word2vec.png" alt="My photo" style="max-width:600px; width:100%; height:auto; display:block; margin-left:auto; margin-right:auto; margin-bottom:1em;">
+  <figcaption>fig 5: word2vec embeddings from spotify dataset.</figcaption>
+</figure>
+<p>i found, as expected (and hoped!) that every dimensionality of the poincaré embeddings outperformed the Word2Vec embeddings on mean rank and mean average precision metrics.</p>
+<h3 id="probing-the-structure"><a class="zola-anchor" href="#probing-the-structure" aria-label="Anchor link for: probing-the-structure">probing the structure</a></h3>
+<p>so one of the cooler aspects of this whole project was the ability to navigate the embedding space directly. what this allowed me to do was to create a constrained $k$-nearest neighbor retrieval search on the embedding space to try and isolate genre labels which had specifically parental relationships to the query label.</p>
+<p>to do this, i simply constrained the KNN search to embeddings with a lower norm (i.e. closer to the center of the poincaré ball/disk) and small angular distance between embeddings. this is because the lower-norm direction encodes the <em>generality</em> of a certain label, which is correlated with parental relationships. the example i used in my presentation was the label "queens hip hop," which is a relatively semantically complex label; it's got not only stylistic meaning, but also geographical information and an explicit reference to a parent genre.</p>
+<div class="image-row">
+  <figure>
+    <img src="/images/thesis/hierarchy_zoomed_queens hip hop.png" alt="First image">
+    <figcaption>fig 6: parent retrieval query for “queens hip hop” from Poincaré embeddings.</figcaption>
+  </figure>
+  <figure>
+    <img src="/images/thesis/word2vec_tsne_queens hip hop.png" alt="Second image">
+    <figcaption>fig 7: KNN query for “queens hip hop” from Word2Vec embeddings.</figcaption>
+  </figure>
+</div>
+<p>an interesting note about the difference between the hyperbolic embeddings and the Word2Vec embeddings is that the Word2Vec embeddings with a pure KNN search find similar genres both in style (e.g. drumless hip hop, conscious hip hop) and in other semantic relationships, such as other genres with geographic information (e.g. detroit hip hop, north carolina hip hop). whereas the hyperbolic embeddings, just as we hoped, not only successfully retrieve more general parentally-related genres (e.g. rap) but also genres with <em>semantically parental</em> relationships, such as east coast hip hop. kinda neat!</p>
+<h2 id="classification-performance"><a class="zola-anchor" href="#classification-performance" aria-label="Anchor link for: classification-performance">classification performance</a></h2>
+<p>sadly, i didn't have quite as much time during the course of my thesis work to dig deeply into the classification implementation as i had hoped. as such, the performance improvements with my current implementation were pretty marginal. below are two of the confusion matrices, from a fine-tuned transfer learning model called YAMNet:</p>
+<div class="image-row">
+  <figure>
+    <img src="/images/thesis/TCN_confusion_matrix.png" alt="First image">
+    <figcaption>fig 8: baseline YAMNet confusion matrix.</figcaption>
+  </figure>
+  <figure>
+    <img src="/images/thesis/hype_TCN_confusion_matrix_dim10.png" alt="Second image">
+    <figcaption>fig 9: YAMnet confusion matrix with hybrid loss function $\mathcal{L}_{WCE}$.</figcaption>
+  </figure>
+</div>
+<p>as you can see, the differences are not too overwhelming. and in fact, the F1-score between the two models was identical in this case, using 10-dimensional Poincaré embeddings. the one thing i did note between these two confusion matrices was that the commonly-confused label pair of "country" and "rock" were spread into several different labels when using the hybrid loss function. but the real insight, it seemed, came from investigating the per-class performance:</p>
+<figure style="text-align: center;">
+  <img src="/images/thesis/correlation_plot.png" alt="My photo" style="max-width:600px; width:100%; height:auto; display:block; margin-left:auto; margin-right:auto; margin-bottom:1em;">
+  <figcaption>fig 10: correlation between average hyperbolic distance per label and change in label-wise F1 score ($\Delta$F1) for classification with YAMNet.</figcaption>
+</figure>
+<p>what this shows is a pretty consistent per-class improvement in F1-score. this suggests that labels which exist farther apart in the embedding space see heightened performance on classification tasks, while there is some confusion introduced by labels which have a low average distance and are central to the other embeddings. this further suggests that the structure learned from the embedding space is beneficial to classification accuracy when distinguishing genres that are <em>semantically unique</em> from other genres in the same dataset. this positive trend suggests that while the current implementation may not be optimal, the structure of the embeddings could be used in other ways to separate genre labels which are confused by classification models.</p>
+
+            </section>
+        </article>
+    </main>
+
+    
+        
+        
+    
+
+    
+    <div id="references">
+    
+    
+        <h3>references</h3>
+        <dl>
+        
+            
+    <dt class="ref-num" id="bibref-lena2008classification">[1]</dt>
+    <dd>
+
+    
+        
+    Lena, Jennifer C and Peterson, Richard A, 
+    "Classification as culture: Types and trajectories of music genres", 
+    , <em>American sociological review</em>
+    , vol. 73
+    , no. 5
+    , pp. 697-718
+    , 2008
+
+    
+
+</dd>
+
+        
+            
+    <dt class="ref-num" id="bibref-astefanoaei2020hyperbolic">[2]</dt>
+    <dd>
+
+    
+        
+    Astefanoaei, Maria and Collignon, Nicolas, 
+    "Hyperbolic embeddings for music taxonomy," 
+    in <em>Proceedings of the 1st Workshop on NLP for Music and Audio (NLP4MusA)</em>
+    
+    2020,
+    pp. 38-42.
+
+    
+
+</dd>
+
+        
+            
+    <dt class="ref-num" id="bibref-nickel2017poincare">[3]</dt>
+    <dd>
+
+    
+        
+    Nickel, Maximillian and Kiela, Douwe, 
+    "Poincaré embeddings for learning hierarchical representations", 
+    , <em>Advances in neural information processing systems</em>
+    , vol. 30
+    
+    
+    , 2017
+
+    
+
+</dd>
+
+        
+            
+    <dt class="ref-num" id="bibref-chen2023label">[4]</dt>
+    <dd>
+
+    
+        
+    Chen, Chih-Yao and Hung, Tun-Min and Hsu, Yi-Li and Ku, Lun-Wei, 
+    "Label-aware hyperbolic embeddings for fine-grained emotion classification", 
+    , <em>arXiv preprint arXiv:2306.14822</em>
+    
+    
+    
+    , 2023
+
+    
+
+</dd>
+
+        
+        </dl>
+    
+    </div>
+
+
+
+            
+                
+            
+
+            
+                <div class="giscus"></div>
+                <script src="https://utteranc.es/client.js" repo="YOUR_NAME/YOUR_REPO" issue-term="pathname" theme="github-light" crossorigin="anonymous" async>
+</script>
+
+            
+        </div>
+    </body>
+
+</html>
